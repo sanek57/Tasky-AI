@@ -6,6 +6,7 @@ import { RootLayout } from '@/layouts/RootLayout'
 
 // Pages
 import { HomePage } from '@/pages/HomePage'
+import { RegisterPage } from '@/pages/RegisterPage'
 
 // Actions
 
@@ -21,6 +22,10 @@ const rootRouteChildren: RouteObject[] = [
   {
     index: true,
     element: <HomePage />,
+  },
+  {
+    path: 'register',
+    element: <RegisterPage />,
   },
 ]
 
