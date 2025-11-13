@@ -15,7 +15,7 @@ export const RootLayout = () => {
 
   const isLoading = navigation.state === 'loading'
 
-  console.log(isLoading, navigation.formData)
+  console.log(isLoading, navigation.state)
 
   return (
     <>
@@ -42,7 +42,7 @@ export const RootLayout = () => {
               alt='Tasky AI'
             />
 
-            <Loader2 className='text-muted-foreground animate-spin'/>
+            <Loader2 className='text-muted-foreground animate-spin' />
           </div>
         )}
       </div>

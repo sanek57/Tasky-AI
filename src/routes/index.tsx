@@ -10,6 +10,7 @@ import { HomePage } from '@/pages/HomePage'
 import { RegisterPage } from '@/pages/RegisterPage'
 import { LoginPage } from '@/pages/LoginPage'
 import { AuthSyncPage } from '@/pages/AuthSyncPage'
+import { InboxPage } from '@/pages/InboxPage'
 
 // Actions
 
@@ -40,15 +41,28 @@ const rootRouteChildren: RouteObject[] = [
   },
 ]
 
+const appRouteChildren: RouteObject[] = [
+  {
+    path: 'inbox',
+    element: <InboxPage />,
+  },
+]
+
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
     errorElement: <RootErrorBoundary />,
     children: rootRouteChildren,
+    loader: async () => {
+      await new Promise(r => {
+        setTimeout(r, 1000)
+      })
+    },
   },
   {
     path: '/app',
     element: <AppLayout />,
+    children: appRouteChildren,
   },
 ])

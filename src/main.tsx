@@ -26,7 +26,7 @@ if (!PUBLISHABLE_KEY) {
 createRoot(document.getElementById('root')!).render(
   <ClerkProvider
     publishableKey={PUBLISHABLE_KEY}
-    afterSignOutUrl={'/auth-sunc'}
+    afterSignOutUrl={'/auth-sync'}
     signInForceRedirectUrl={SIGN_IN_FORCE_REDIRECT_URL}
     signUpForceRedirectUrl={SIGN_UP_FORCE_REDIRECT_URL}
     appearance={{
@@ -46,5 +46,5 @@ createRoot(document.getElementById('root')!).render(
     }}
   >
     <RouterProvider router={router} />
-  </ClerkProvider>
+  </ClerkProvider>,
 )
