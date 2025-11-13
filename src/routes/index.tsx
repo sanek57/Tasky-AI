@@ -3,10 +3,13 @@ import { createBrowserRouter } from 'react-router'
 
 // Layouts
 import { RootLayout } from '@/layouts/RootLayout'
+import { AppLayout } from '@/layouts/AppLayout'
 
 // Pages
 import { HomePage } from '@/pages/HomePage'
 import { RegisterPage } from '@/pages/RegisterPage'
+import { LoginPage } from '@/pages/LoginPage'
+import { AuthSyncPage } from '@/pages/AuthSyncPage'
 
 // Actions
 
@@ -27,6 +30,14 @@ const rootRouteChildren: RouteObject[] = [
     path: 'register',
     element: <RegisterPage />,
   },
+  {
+    path: 'login',
+    element: <LoginPage />,
+  },
+  {
+    path: 'auth-sync',
+    element: <AuthSyncPage />,
+  },
 ]
 
 export const router = createBrowserRouter([
@@ -35,5 +46,9 @@ export const router = createBrowserRouter([
     element: <RootLayout />,
     errorElement: <RootErrorBoundary />,
     children: rootRouteChildren,
+  },
+  {
+    path: '/app',
+    element: <AppLayout />,
   },
 ])

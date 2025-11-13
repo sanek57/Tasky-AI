@@ -45,6 +45,6 @@ createRoot(document.getElementById('root')!).render(
       },
     }}
   >
-    <RouterProvider router={router} />,
-  </ClerkProvider>,
+    <RouterProvider router={router} />
+  </ClerkProvider>
 )
