@@ -12,6 +12,7 @@ import { HomePage } from '@/pages/HomePage'
 // Loaders
 
 // Error
+import { RootErrorBoundary } from '@/pages/RootErrorBoundary'
 
 // Types
 import { type RouteObject } from 'react-router'
@@ -27,7 +28,7 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
-    errorElement: <span>404. You bad boy. Yooups...</span>,
+    errorElement: <RootErrorBoundary />,
     children: rootRouteChildren,
   },
 ])
