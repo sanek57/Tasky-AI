@@ -30,7 +30,7 @@ export const SIDEBAR_LINKS = [
   {
     href: '/app/today',
     label: 'Today',
-    icon: Calendar1,
+  icon: Calendar1,
   },
   {
     href: '/app/upcoming',
