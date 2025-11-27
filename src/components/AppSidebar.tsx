@@ -34,6 +34,7 @@ import { ChevronRight, CirclePlus, Plus } from 'lucide-react'
 
 // Constants
 import { SIDEBAR_LINKS } from '@/constants'
+import { TaskFormDialog } from './TaskFormDialog'
 
 export const AppSidebar = () => {
   return (
@@ -53,9 +54,11 @@ export const AppSidebar = () => {
             <SidebarMenu>
               {/* Task create */}
               <SidebarMenuItem>
-                <SidebarMenuButton className='text-primary!'>
-                  <CirclePlus /> Add task
-                </SidebarMenuButton>
+                <TaskFormDialog>
+                  <SidebarMenuButton className='text-primary!'>
+                    <CirclePlus /> Add task
+                  </SidebarMenuButton>
+                </TaskFormDialog>
               </SidebarMenuItem>
 
               {/* Sidebar links */}

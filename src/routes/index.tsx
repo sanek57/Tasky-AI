@@ -21,6 +21,7 @@ import { RootErrorBoundary } from '@/pages/RootErrorBoundary'
 
 // Types
 import { type RouteObject } from 'react-router'
+import { appAction } from './actions/appAction'
 
 const rootRouteChildren: RouteObject[] = [
   {
@@ -64,5 +65,6 @@ export const router = createBrowserRouter([
     path: '/app',
     element: <AppLayout />,
     children: appRouteChildren,
+    action: appAction
   },
 ])
