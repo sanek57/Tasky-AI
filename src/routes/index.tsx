@@ -11,12 +11,14 @@ import { RegisterPage } from '@/pages/RegisterPage'
 import { LoginPage } from '@/pages/LoginPage'
 import { AuthSyncPage } from '@/pages/AuthSyncPage'
 import { InboxPage } from '@/pages/InboxPage'
+import { TodayTaskPage } from '@/pages/TodayTaskPage'
 
 // Actions
 import { appAction } from '@/routes/actions/appAction'
 
 // Loaders
 import { inboxTaskLoader } from '@/routes/loaders/inboxLoader'
+import { todayTaskLoader } from './loaders/todayTaskLoader'
 
 // Error
 import { RootErrorBoundary } from '@/pages/RootErrorBoundary'
@@ -47,7 +49,12 @@ const appRouteChildren: RouteObject[] = [
   {
     path: 'inbox',
     element: <InboxPage />,
-    loader: inboxTaskLoader
+    loader: inboxTaskLoader,
+  },
+  {
+    path: 'today',
+    element: <TodayTaskPage />,
+    loader: todayTaskLoader
   },
 ]
 

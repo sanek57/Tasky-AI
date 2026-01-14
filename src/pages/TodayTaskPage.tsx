@@ -13,9 +13,13 @@ import type { Models } from 'appwrite'
 import { TaskCard } from '@/components/TaskCard'
 import { TaskCardSkeleton } from '@/components/TaskCardSkeleton'
 
-// types
+// Assets
+import { CheckCircle2 } from 'lucide-react'
 
-export const InboxPage = () => {
+// Custom modules
+import { startOfToday } from 'date-fns'
+
+export const TodayTaskPage = () => {
   const [taskFormShow, SetTaskFormShow] = useState<boolean>(false)
   const fetcher = useFetcher()
   const { tasks } = useLoaderData<{
@@ -24,15 +28,22 @@ export const InboxPage = () => {
 
   return (
     <>
-      <Head title='Inbox - Tasky AI' />
+      <Head title='Today - Tasky AI' />
 
       <TopAppBar
-        title='Inbox'
+        title='Today'
+        taskCount={tasks.total}
       ></TopAppBar>
 
       <Page>
         <PageHeader>
-          <PageTitle> Inbox </PageTitle>
+          <PageTitle> Today </PageTitle>
+
+          {tasks.total > 0 && (
+            <div className='flex items-center gap-1.5 text-sm text-muted-foreground'>
+              <CheckCircle2 size={16} /> {tasks.total} tasks
+            </div>
+          )}
         </PageHeader>
 
         <PageList>
@@ -53,12 +64,17 @@ export const InboxPage = () => {
             <TaskCreateButton onClick={() => SetTaskFormShow(true)} />
           )}
 
-          {!tasks.total && !taskFormShow && <TaskEmpty type='inbox' />}
+          {!tasks.total && !taskFormShow && <TaskEmpty />}
 
           {taskFormShow && (
             <TaskForm
               className='mt-1'
               mode='create'
+              defaultFormData={{
+                content: '',
+                due_date: startOfToday(),
+                project: null,
+              }}
               onCancel={() => SetTaskFormShow(false)}
               onSubmit={formData => {
                 fetcher.submit(JSON.stringify(formData), {

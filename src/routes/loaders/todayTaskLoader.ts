@@ -1,12 +1,10 @@
 // Node Modules
-
 import { Query, tablesDS } from '@/lib/appwrite'
 import type { LoaderFunction } from 'react-router'
 
 // Custom Modules
 import { getUserId } from '@/lib/utils'
-
-// Types
+import { startOfToday, startOfTomorrow } from 'date-fns'
 
 const getTasks = async () => {
   try {
@@ -15,18 +13,20 @@ const getTasks = async () => {
       tableId: 'tasks',
       queries: [
         Query.equal('completed', false),
-        // Query.isNull('project'), // tasks without a project - не работате на связных таблицах в appwrite
+        Query.and([// tasks for today
+            Query.greaterThanEqual('due_date', startOfToday().toISOString()), 
+            Query.lessThanEqual('due_date', startOfTomorrow().toISOString()), 
+        ]),
         Query.equal('userId', getUserId() as string), // tasks for current user
       ],
     })
-  } catch (error) {
+  } catch (error) { 
     console.log(error)
-    throw new Error('Error getting inbox tasks')
+    throw new Error('Error getting today tasks')
   }
 }
 
-export const inboxTaskLoader: LoaderFunction = async () => {
+export const todayTaskLoader: LoaderFunction = async () => {
   const tasks = await getTasks()
-  // console.log(123, tasks)
   return { tasks }
 }

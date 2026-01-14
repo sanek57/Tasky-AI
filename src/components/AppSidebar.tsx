@@ -1,5 +1,5 @@
 // Node Modules
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 
 // Components
 import {
@@ -15,6 +15,7 @@ import {
   SidebarMenuBadge,
   SidebarGroupLabel,
   SidebarGroupAction,
+  useSidebar,
 } from '@/components/ui/sidebar'
 import { Logo } from '@/components/Logo'
 import { UserButton } from '@clerk/clerk-react'
@@ -28,15 +29,18 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { TaskFormDialog } from './TaskFormDialog'
 
 // Assets
 import { ChevronRight, CirclePlus, Plus } from 'lucide-react'
 
 // Constants
 import { SIDEBAR_LINKS } from '@/constants'
-import { TaskFormDialog } from './TaskFormDialog'
 
 export const AppSidebar = () => {
+  const location = useLocation()
+  const { isMobile, setOpenMobile } = useSidebar()
+
   return (
     <Sidebar>
       <SidebarHeader>
@@ -64,7 +68,13 @@ export const AppSidebar = () => {
               {/* Sidebar links */}
               {SIDEBAR_LINKS.map(item => (
                 <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={location.pathname === item.href}
+                    onClick={() => {
+                      if (isMobile) setOpenMobile(false) // автоскрытие на маленьких экранах
+                    }}
+                  >
                     <Link to={item.href}>
                       <item.icon />
                       <span>{item.label}</span>

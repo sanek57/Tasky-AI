@@ -1,11 +1,11 @@
 // Node modules
 import React, { type FC } from 'react'
-import { Button } from './ui/button'
-import { CirclePlus } from 'lucide-react'
 
 // Components
+import { Button } from './ui/button'
 
 // Assets
+import { CirclePlus } from 'lucide-react'
 
 // Types
 // remove field className from object
