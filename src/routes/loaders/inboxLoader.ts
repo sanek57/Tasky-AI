@@ -15,7 +15,7 @@ const getTasks = async () => {
       tableId: 'tasks',
       queries: [
         Query.equal('completed', false),
-        Query.isNull('projectId'), // tasks without a project
+        // Query.isNull('project'), // tasks without a project - не работате на связных таблицах в appwrite
         Query.equal('userId', getUserId() as string), // tasks for current user
       ],
     })
@@ -27,6 +27,6 @@ const getTasks = async () => {
 
 export const inboxTaskLoader: LoaderFunction = async () => {
   const tasks = await getTasks()
-//   console.log(123, tasks)
+  // console.log(123, tasks)
   return { tasks }
 }

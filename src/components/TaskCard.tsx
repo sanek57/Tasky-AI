@@ -1,5 +1,5 @@
 // Node Modules
-import React, { useState, type FC } from 'react'
+import React, { useCallback, useState, type FC } from 'react'
 import { useFetcher } from 'react-router'
 
 // Custom Modules
@@ -10,9 +10,11 @@ import { Button } from './ui/button'
 import { Card, CardContent, CardFooter } from './ui/card'
 import { TaskForm } from './TaskForm'
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip'
+import { toast } from 'sonner'
 
 // Assets
 import { CalendarDays, Check, Edit, Hash, Inbox, Trash } from 'lucide-react'
+import type { Task } from '@/types'
 
 // Types
 type TaskCardProps = {
@@ -33,6 +35,35 @@ export const TaskCard: FC<TaskCardProps> = ({
   const [taskFormShow, setTaskFormShow] = useState<boolean>(false)
   const fetcher = useFetcher()
 
+  const fetchTask = fetcher.json as Task
+
+  const task: Task = Object.assign(
+    {
+      id,
+      content,
+      completed,
+      due_date: dueDate,
+      project,
+    },
+    fetchTask,
+  )
+  const handleTaskComplete = useCallback(
+    async (completed: boolean) => {
+      return await fetcher.submit(
+        JSON.stringify({
+          id: task.id,
+          completed,
+        }),
+        {
+          action: '/app',
+          method: 'PUT',
+          encType: 'application/json',
+        },
+      )
+    },
+    [task.id, fetcher],
+  )
+
   return (
     <>
       {!taskFormShow && (
@@ -42,18 +73,28 @@ export const TaskCard: FC<TaskCardProps> = ({
             size='icon'
             className={cn(
               'group/button rounded-full w-5 h-5 mt-2',
-              completed && 'bg-border',
+              task.completed && 'bg-border',
             )}
             role='checkbox'
-            aria-checked={completed}
-            aria-label={`Mark task as ${completed ? 'incomplete' : 'complete'}`}
+            aria-checked={task.completed}
+            aria-label={`Mark task as ${task.completed ? 'incomplete' : 'complete'}`}
             aria-describedby='task-content'
+            onClick={async () => {
+              await handleTaskComplete(!task.completed)
+              toast('Task completed', {
+                description: '',
+                action: {
+                  label: 'Undo',
+                  onClick: handleTaskComplete.bind(null, false), // можно через async/await
+                },
+              })
+            }}
           >
             <Check
               strokeWidth={4}
               className={cn(
                 'w-3! h-3! text-muted-foreground group-hover/button:opacity-100 transition-opacity',
-                completed ? 'opacity-100' : 'opacity-0',
+                task.completed ? 'opacity-100' : 'opacity-0',
               )}
             />
           </Button>
@@ -65,29 +106,29 @@ export const TaskCard: FC<TaskCardProps> = ({
                 id='task-content'
                 className={cn(
                   'text-sm max-md:me-16',
-                  completed && 'text-muted-foreground line-through',
+                  task.completed && 'text-muted-foreground line-through',
                 )}
               >
-                {content}
+                {task.content}
               </p>
             </CardContent>
             <CardFooter className='p-0 flex gap-4'>
-              {dueDate && (
+              {task.due_date && (
                 <div
                   className={cn(
                     'flex items-center gap-1 text-xs text-muted-foreground',
-                    getTaskDueDateColorClass(dueDate, completed),
+                    getTaskDueDateColorClass(task.due_date, task.completed),
                   )}
                 >
                   <CalendarDays size={14} />
-                  {formatCustomDate(dueDate)}
+                  {formatCustomDate(task.due_date)}
                 </div>
               )}
               <div className='grid grid-cols-[minmax(0,180px)_max-content] items-center gap-1 text-xs text-muted-foreground ms-auto'>
                 <div className='truncate text-right'>
-                  {project?.name || 'Inbox'}
+                  {task.project?.name || 'Inbox'}
                 </div>
-                {project ? (
+                {task.project ? (
                   <Hash size={14} />
                 ) : (
                   <Inbox
@@ -100,7 +141,7 @@ export const TaskCard: FC<TaskCardProps> = ({
           </Card>
 
           <div className='absolute top-1.5 right-0 bg-background ps-1 shadow-[-10px_0_5px_hst(var(--background))] flex items-center gap-1 opacity-0 group-hover/card:opacity-100 transition-opacity focus-within:opacity-100 max-md:opacity-100'>
-            {!completed && (
+            {!task.completed && (
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
@@ -138,9 +179,7 @@ export const TaskCard: FC<TaskCardProps> = ({
         <TaskForm
           className='my-1'
           defaultFormData={{
-            id,
-            content,
-            due_date: dueDate,
+            ...task,
             project,
           }}
           mode='edit'

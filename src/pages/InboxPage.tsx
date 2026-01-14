@@ -37,7 +37,7 @@ export const InboxPage = () => {
 
         <PageList>
           {tasks.rows?.map(
-            ({ $id, content, completed, due_date, projectId : project }) => (
+            ({ $id, content, completed, due_date, project }) => (
               <TaskCard
                 key={$id}
                 id={$id}

@@ -10,21 +10,20 @@ import { getUserId } from '@/lib/utils'
 
 const createTask = async (data: Task) => {
   try {
-    console.log(data)
-    const response = await tablesDS.createRow({
+    return await tablesDS.createRow({
       databaseId: import.meta.env.VITE_APPWRITE_DATABASE_ID,
       tableId: 'tasks',
       rowId: ID.unique(),
       data: { ...data, userId: getUserId() },
     })
 
-    console.log(response)
+    // console.log(response)
   } catch (error) {
     console.log(error)
   }
 }
 
-const updateTask = async (data: Task & { $id: string }) => {
+const updateTask = async (data: Task & { $id?: string }) => {
   if (!data.id) {
     throw new Error('Task id not found')
   }
@@ -34,13 +33,13 @@ const updateTask = async (data: Task & { $id: string }) => {
   delete data.id // for work appWrite
 
   try {
-    const response = await tablesDS.updateRow({
+    return await tablesDS.updateRow({
       databaseId: import.meta.env.VITE_APPWRITE_DATABASE_ID,
       tableId: 'tasks',
       rowId: data.$id,
       data: { ...data, userId: getUserId() },
     })
-    console.log(response)
+    // console.log(response)
   } catch (error) {
     console.log(error)
   }
@@ -52,8 +51,6 @@ export const appAction: ActionFunction = async ({ request }) => {
   if (request.method === 'POST') {
     return await createTask(data)
   }
-
-  console.log(data)
 
   if (request.method === 'PUT') {
     return await updateTask(data)
