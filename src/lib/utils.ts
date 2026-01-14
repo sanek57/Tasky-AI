@@ -87,3 +87,11 @@ export function getTaskDueDateColorClass(
 export const getUserId = () => {
   return localStorage.getItem('clerkUserId')
 }
+
+export const trancateString = (str: string, maxLength: number = 48) => {
+  if (str.length > maxLength) {
+    return str.slice(0, maxLength) + '...'
+  } else {
+    return str
+  }
+}

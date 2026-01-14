@@ -45,6 +45,25 @@ const updateTask = async (data: Task & { $id?: string }) => {
   }
 }
 
+const deleteTask = async (data: Task & { $id?: string }) => {
+  if (!data.id) {
+    throw new Error('Task id not found')
+  }
+
+  data.$id = data.id
+
+  delete data.id // for work appWrite
+  try {
+    return await tablesDS.deleteRow({
+      databaseId: import.meta.env.VITE_APPWRITE_DATABASE_ID,
+      tableId: 'tasks',
+      rowId: data.$id,
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const appAction: ActionFunction = async ({ request }) => {
   const data = (await request.json()) as Task
 
@@ -54,5 +73,9 @@ export const appAction: ActionFunction = async ({ request }) => {
 
   if (request.method === 'PUT') {
     return await updateTask(data)
+  }
+
+  if (request.method === 'DELETE') {
+    return await deleteTask(data)
   }
 }
