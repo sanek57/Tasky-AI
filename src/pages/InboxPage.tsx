@@ -11,6 +11,7 @@ import { TaskEmpty } from '@/components/TaskEmpty'
 import { TaskForm } from '@/components/TaskForm'
 import type { Models } from 'appwrite'
 import { TaskCard } from '@/components/TaskCard'
+import { TaskCardSkeleton } from '@/components/TaskCardSkeleton'
 
 // types
 
@@ -36,23 +37,24 @@ export const InboxPage = () => {
         </PageHeader>
 
         <PageList>
-          {tasks.rows?.map(
-            ({ $id, content, completed, due_date, project }) => (
-              <TaskCard
-                key={$id}
-                id={$id}
-                content={content}
-                completed={completed}
-                dueDate={due_date}
-                project={project}
-              />
-            ),
-          )}
+          {tasks.rows?.map(({ $id, content, completed, due_date, project }) => (
+            <TaskCard
+              key={$id}
+              id={$id}
+              content={content}
+              completed={completed}
+              dueDate={due_date}
+              project={project}
+            />
+          ))}
+
+          {fetcher.state !== 'idle' && <TaskCardSkeleton />}
 
           {!taskFormShow && (
             <TaskCreateButton onClick={() => SetTaskFormShow(true)} />
           )}
-          {!taskFormShow && <TaskEmpty type='inbox' />}
+
+          {!tasks.total && !taskFormShow && <TaskEmpty type='inbox' />}
 
           {taskFormShow && (
             <TaskForm
