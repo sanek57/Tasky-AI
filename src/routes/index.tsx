@@ -13,15 +13,16 @@ import { AuthSyncPage } from '@/pages/AuthSyncPage'
 import { InboxPage } from '@/pages/InboxPage'
 
 // Actions
+import { appAction } from '@/routes/actions/appAction'
 
 // Loaders
+import { inboxTaskLoader } from '@/routes/loaders/inboxLoader'
 
 // Error
 import { RootErrorBoundary } from '@/pages/RootErrorBoundary'
 
 // Types
 import { type RouteObject } from 'react-router'
-import { appAction } from './actions/appAction'
 
 const rootRouteChildren: RouteObject[] = [
   {
@@ -46,6 +47,7 @@ const appRouteChildren: RouteObject[] = [
   {
     path: 'inbox',
     element: <InboxPage />,
+    loader: inboxTaskLoader
   },
 ]
 
@@ -65,6 +67,6 @@ export const router = createBrowserRouter([
     path: '/app',
     element: <AppLayout />,
     children: appRouteChildren,
-    action: appAction
+    action: appAction,
   },
 ])

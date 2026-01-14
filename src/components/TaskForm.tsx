@@ -88,7 +88,7 @@ export const TaskForm: FC<TaskFormProps> = ({
       ...prev,
       content: taskContent,
       due_date: dueDate,
-      projectId: projectId,
+      project: projectId,
     }))
   }, [taskContent, dueDate, projectId])
 
@@ -112,7 +112,7 @@ export const TaskForm: FC<TaskFormProps> = ({
   }, [taskContent, formData, onSubmit])
 
   return (
-    <Card className='focus-within:border-foreground/30 p-1! gap-0'>
+    <Card className={cn('focus-within:border-foreground/30 p-1! gap-0', className)}>
       <CardContent className='p-2'>
         <Textarea
           className='border-0! ring-0! mb-2! p-1!'
@@ -121,6 +121,12 @@ export const TaskForm: FC<TaskFormProps> = ({
           value={taskContent}
           onInput={e => {
             setTaskContent(e.currentTarget.value)
+          }}
+          onKeyDown={e => {
+            if(e.key === 'Enter'){
+              e.preventDefault()
+              handleSubmit()
+            }
           }}
         />
 

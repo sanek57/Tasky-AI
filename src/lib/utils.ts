@@ -83,3 +83,7 @@ export function getTaskDueDateColorClass(
     return 'text-amber-500'
   }
 }
+
+export const getUserId = () => {
+  return localStorage.getItem('clerkUserId')
+}
