@@ -6,6 +6,7 @@ import { useFetcher } from 'react-router'
 import { Dialog, DialogContent, DialogTrigger } from './ui/dialog'
 import { DialogTitle } from '@radix-ui/react-dialog'
 import { ProjectForm } from './ProjectForm'
+import { toast } from 'sonner'
 
 // Types
 import type { Project } from '@/types'
@@ -37,13 +38,19 @@ export const ProjectFormDialog: FC<ProjectFormDialogProps> = ({
           defaultFormData={defaultFormData}
           onCancel={() => setOpen(false)}
           onSubmit={async formData => {
-            await fetcher.submit(JSON.stringify(formData), {
-              action: '/app/projects',
-              method,
-              encType: 'application/json',
-            })
-
             setOpen(false)
+
+            toast.promise(
+              () =>
+                fetcher.submit(JSON.stringify(formData), {
+                  action: '/app/projects',
+                  method,
+                  encType: 'application/json',
+                }),
+              {
+                loading: `${method === 'POST' ? 'Creating' : 'Updating'} project...`,
+              },
+            )
           }}
         />
       </DialogContent>
