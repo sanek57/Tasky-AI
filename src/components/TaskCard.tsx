@@ -99,13 +99,15 @@ export const TaskCard: FC<TaskCardProps> = ({
             aria-describedby='task-content'
             onClick={async () => {
               await handleTaskComplete(!task.completed)
-              toast('Task completed', {
-                description: '',
-                action: {
-                  label: 'Undo',
-                  onClick: handleTaskComplete.bind(null, false), // можно через async/await
-                },
-              })
+              if (!task.completed) {
+                toast('Task completed', {
+                  description: '',
+                  action: {
+                    label: 'Undo',
+                    onClick: handleTaskComplete.bind(null, false), // можно через async/await
+                  },
+                })
+              }
             }}
           >
             <Check
