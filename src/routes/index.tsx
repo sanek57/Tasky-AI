@@ -17,6 +17,7 @@ import { UpcomingTaskPage } from '@/pages/UpcomingTaskPage'
 
 // Actions
 import { appAction } from '@/routes/actions/appAction'
+import { projectAction } from './actions/projectAction'
 
 // Loaders
 import { inboxTaskLoader } from '@/routes/loaders/inboxLoader'
@@ -69,7 +70,10 @@ const appRouteChildren: RouteObject[] = [
     path: 'completed',
     element: <CompletedTaskPage />,
     loader: completedTaskLoader,
-  },
+  },{
+    path: 'projects',
+    action: projectAction
+  }
 ]
 
 export const router = createBrowserRouter([

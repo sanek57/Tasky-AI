@@ -36,6 +36,7 @@ import { ChevronRight, CirclePlus, Plus } from 'lucide-react'
 
 // Constants
 import { SIDEBAR_LINKS } from '@/constants'
+import { ProjectFormDialog } from './ProjectFormDialog'
 
 export const AppSidebar = () => {
   const location = useLocation()
@@ -108,11 +109,13 @@ export const AppSidebar = () => {
               disableHoverableContent
               delayDuration={500}
             >
-              <TooltipTrigger asChild>
-                <SidebarGroupAction aria-label='Add project'>
-                  <Plus />
-                </SidebarGroupAction>
-              </TooltipTrigger>
+              <ProjectFormDialog method='POST'>
+                <TooltipTrigger asChild>
+                  <SidebarGroupAction aria-label='Add project'>
+                    <Plus />
+                  </SidebarGroupAction>
+                </TooltipTrigger>
+              </ProjectFormDialog>
               <TooltipContent
                 side='right'
                 className='bg-primary text-foreground'

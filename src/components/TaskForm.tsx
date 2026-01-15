@@ -1,5 +1,5 @@
 // Node Modules
-import { useCallback, useEffect, useState, type FC } from 'react'
+import React, { useCallback, useEffect, useState, type FC } from 'react'
 import * as chrono from 'chrono-node'
 
 // Custom modules
@@ -95,7 +95,7 @@ export const TaskForm: FC<TaskFormProps> = ({
   useEffect(() => {
     const chronoParsed = chrono.parse(taskContent)
 
-    if(chronoParsed.length) {
+    if (chronoParsed.length) {
       const lastDate = chronoParsed[chronoParsed.length - 1]
 
       setDueDate(lastDate.date())
@@ -105,25 +105,26 @@ export const TaskForm: FC<TaskFormProps> = ({
   const handleSubmit = useCallback(() => {
     if (!taskContent) return
 
-
     if (onSubmit) onSubmit(formData)
 
     setTaskContent('')
   }, [taskContent, formData, onSubmit])
 
   return (
-    <Card className={cn('focus-within:border-foreground/30 p-1! gap-0', className)}>
+    <Card
+      className={cn('focus-within:border-foreground/30 p-1! gap-0', className)}
+    >
       <CardContent className='p-2'>
         <Textarea
           className='border-0! ring-0! mb-2! p-1!'
           placeholder='After finishing the project, Take a tour'
           autoFocus
           value={taskContent}
-          onInput={e => {
+          onInput={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
             setTaskContent(e.currentTarget.value)
           }}
-          onKeyDown={e => {
-            if(e.key === 'Enter'){
+          onKeyDown={(e: React.KeyboardEvent<HTMLElement>)=> {
+            if (e.key === 'Enter') {
               e.preventDefault()
               handleSubmit()
             }
