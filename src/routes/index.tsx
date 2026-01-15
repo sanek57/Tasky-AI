@@ -25,6 +25,8 @@ import { RootErrorBoundary } from '@/pages/RootErrorBoundary'
 
 // Types
 import { type RouteObject } from 'react-router'
+import { upcomingTaskLoader } from './loaders/upcomingTaskLoader'
+import { UpcomingTaskPage } from '@/pages/UpcomingTaskPage'
 
 const rootRouteChildren: RouteObject[] = [
   {
@@ -54,7 +56,12 @@ const appRouteChildren: RouteObject[] = [
   {
     path: 'today',
     element: <TodayTaskPage />,
-    loader: todayTaskLoader
+    loader: todayTaskLoader,
+  },
+  {
+    path: 'upcoming',
+    element: <UpcomingTaskPage />,
+    loader: upcomingTaskLoader,
   },
 ]
 
