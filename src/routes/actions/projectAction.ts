@@ -6,7 +6,7 @@ import { getUserId } from '@/lib/utils'
 import { ID, tablesDS } from '@/lib/appwrite'
 
 // Types
-import type { ProjectForm } from '@/types'
+import type { Project, ProjectForm } from '@/types'
 import { generateProjectTasks } from '@/api/openRouterAi'
 import type { aiGenTask } from '@/lib/openRouterAi'
 
@@ -65,6 +65,25 @@ const createProject = async (data: ProjectForm) => {
   }
 }
 
+const deleteProject = async (data: Project & { $id: string }) => {
+  if (!data.id) {
+    throw new Error('Project id not found')
+  }
+
+  data.$id = data.id
+
+  delete data.id // for work appWrite
+  try {
+    await tablesDS.deleteRow({
+      databaseId: import.meta.env.VITE_APPWRITE_DATABASE_ID,
+      tableId: 'projects',
+      rowId: data.$id,
+    })
+  } catch (error) {
+    console.log('Error deleting project:', error)
+  }
+}
+
 // const updateTask = async (data: Task & { $id?: string }) => {
 //   if (!data.id) {
 //     throw new Error('Task id not found')
@@ -96,5 +115,9 @@ export const projectAction: ActionFunction = async ({ request }) => {
 
   if (request.method === 'PUT') {
     // return await updateTask(data)
+  }
+
+  if (request.method === 'DELETE') {
+    return await deleteProject(data)
   }
 }

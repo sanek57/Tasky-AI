@@ -14,6 +14,7 @@ import { InboxPage } from '@/pages/InboxPage'
 import { TodayTaskPage } from '@/pages/TodayTaskPage'
 import { CompletedTaskPage } from '@/pages/CompletedTaskPage'
 import { UpcomingTaskPage } from '@/pages/UpcomingTaskPage'
+import { ProjectsPage } from '@/pages/ProjectsPage'
 
 // Actions
 import { appAction } from '@/routes/actions/appAction'
@@ -24,6 +25,7 @@ import { inboxTaskLoader } from '@/routes/loaders/inboxLoader'
 import { todayTaskLoader } from './loaders/todayTaskLoader'
 import { upcomingTaskLoader } from './loaders/upcomingTaskLoader'
 import { completedTaskLoader } from './loaders/completedTaskLoader'
+import { projectsLoader } from './loaders/projectsLoader'
 
 // Error
 import { RootErrorBoundary } from '@/pages/RootErrorBoundary'
@@ -72,7 +74,9 @@ const appRouteChildren: RouteObject[] = [
     loader: completedTaskLoader,
   },{
     path: 'projects',
-    action: projectAction
+    element: <ProjectsPage/>,
+    action: projectAction,
+    loader: projectsLoader
   }
 ]
 
