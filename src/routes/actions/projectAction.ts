@@ -65,7 +65,7 @@ const createProject = async (data: ProjectForm) => {
   }
 }
 
-const deleteProject = async (data: Project & { $id: string }) => {
+const deleteProject = async (data: Project & { $id?: string }) => {
   if (!data.id) {
     throw new Error('Project id not found')
   }
@@ -84,27 +84,30 @@ const deleteProject = async (data: Project & { $id: string }) => {
   }
 }
 
-// const updateTask = async (data: Task & { $id?: string }) => {
-//   if (!data.id) {
-//     throw new Error('Task id not found')
-//   }
+const updateProject = async (data: Project & { $id?: string }) => {
+  if (!data.id) {
+    throw new Error('Project id not found')
+  }
 
-//   data.$id = data.id
+  data.$id = data.id
 
-//   delete data.id // for work appWrite
+  delete data.id // for work appWrite
 
-//   try {
-//     return await tablesDS.updateRow({
-//       databaseId: import.meta.env.VITE_APPWRITE_DATABASE_ID,
-//       tableId: 'tasks',
-//       rowId: data.$id,
-//       data: { ...data, userId: getUserId() },
-//     })
-//     // console.log(response)
-//   } catch (error) {
-//     console.log(error)
-//   }
-// }
+  try {
+    return await tablesDS.updateRow({
+      databaseId: import.meta.env.VITE_APPWRITE_DATABASE_ID,
+      tableId: 'projects',
+      rowId: data.$id,
+      data: {
+        name: data.name,
+        color_name: data.color_name,
+        color_hex: data.color_hex,
+      },
+    })
+  } catch (error) {
+    console.log('Error updating project:', error)
+  }
+}
 
 export const projectAction: ActionFunction = async ({ request }) => {
   const data = (await request.json()) as ProjectForm
@@ -114,10 +117,12 @@ export const projectAction: ActionFunction = async ({ request }) => {
   }
 
   if (request.method === 'PUT') {
-    // return await updateTask(data)
+    return await updateProject(data)
   }
 
   if (request.method === 'DELETE') {
     return await deleteProject(data)
   }
+
+  throw new Error('Invalid method')
 }
