@@ -32,6 +32,7 @@ import { appLoader } from './loaders/appLoader'
 
 // Error
 import { RootErrorBoundary } from '@/pages/RootErrorBoundary'
+import { ProjectErrorBoundary } from '@/pages/ProjectErrorBoundary'
 
 // Types
 import { type RouteObject } from 'react-router'
@@ -86,6 +87,7 @@ const appRouteChildren: RouteObject[] = [
     path: 'projects/:projectId',
     element: <ProjectDetailPage />,
     loader: projectDetailLoader,
+    errorElement: <ProjectErrorBoundary />,
   },
 ]
 
