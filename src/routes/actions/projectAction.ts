@@ -45,7 +45,7 @@ const createProject = async (data: ProjectForm) => {
             rowId: ID.unique(),
             data: {
               ...task,
-              project: [project?.$id],
+              project: project?.$id,
               userId: getUserId(),
             },
           })

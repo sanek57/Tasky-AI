@@ -1,6 +1,6 @@
 // Node modules
 import React, { useCallback, type FC } from 'react'
-import { useFetcher } from 'react-router'
+import { useFetcher, useLocation, useNavigate } from 'react-router'
 
 // Custom modules
 import { trancateString } from '@/lib/utils'
@@ -34,8 +34,14 @@ export const ProjectDeleteButton: FC<ProjectDeleteButtonProps> = ({
   defaultFormData,
 }) => {
   const fetcher = useFetcher()
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const handleProjectDelete = useCallback(() => {
+
+    if(location.pathname === `/app/projects/${defaultFormData.id}`){
+      navigate('/app/inbox')
+    }
 
     try {
       toast.promise(

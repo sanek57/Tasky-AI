@@ -2,6 +2,9 @@
 import React, { useCallback, useRef, useState } from 'react'
 import { useFetcher, useLoaderData } from 'react-router'
 
+// Custom modules
+import { cn } from '@/lib/utils'
+
 // Components
 import { Head } from '@/components/Head'
 import { TopAppBar } from '@/components/TopAppBar'
@@ -12,14 +15,13 @@ import {
   ProjectSearchField,
   type SearchingState,
 } from '@/components/ProjectSearchField'
+import { ProjectCard } from '@/components/ProjectCard'
 
 // Assets
 import { Plus } from 'lucide-react'
 
 // Types
 import type { Models } from 'appwrite'
-import { ProjectCard } from '@/components/ProjectCard'
-import { cn } from '@/lib/utils'
 
 type DataType = {
   projects: Models.DocumentList<Models.Document>

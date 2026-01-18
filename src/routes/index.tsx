@@ -15,6 +15,7 @@ import { TodayTaskPage } from '@/pages/TodayTaskPage'
 import { CompletedTaskPage } from '@/pages/CompletedTaskPage'
 import { UpcomingTaskPage } from '@/pages/UpcomingTaskPage'
 import { ProjectsPage } from '@/pages/ProjectsPage'
+import { ProjectDetailPage } from '@/pages/ProjectDetailPage'
 
 // Actions
 import { appAction } from '@/routes/actions/appAction'
@@ -26,6 +27,8 @@ import { todayTaskLoader } from './loaders/todayTaskLoader'
 import { upcomingTaskLoader } from './loaders/upcomingTaskLoader'
 import { completedTaskLoader } from './loaders/completedTaskLoader'
 import { projectsLoader } from './loaders/projectsLoader'
+import { projectDetailLoader } from './loaders/projectDetailLoader'
+import { appLoader } from './loaders/appLoader'
 
 // Error
 import { RootErrorBoundary } from '@/pages/RootErrorBoundary'
@@ -72,12 +75,18 @@ const appRouteChildren: RouteObject[] = [
     path: 'completed',
     element: <CompletedTaskPage />,
     loader: completedTaskLoader,
-  },{
+  },
+  {
     path: 'projects',
-    element: <ProjectsPage/>,
+    element: <ProjectsPage />,
     action: projectAction,
-    loader: projectsLoader
-  }
+    loader: projectsLoader,
+  },
+  {
+    path: 'projects/:projectId',
+    element: <ProjectDetailPage />,
+    loader: projectDetailLoader,
+  },
 ]
 
 export const router = createBrowserRouter([
@@ -97,5 +106,6 @@ export const router = createBrowserRouter([
     element: <AppLayout />,
     children: appRouteChildren,
     action: appAction,
+    loader: appLoader,
   },
 ])

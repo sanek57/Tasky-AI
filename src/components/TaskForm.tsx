@@ -31,9 +31,13 @@ import {
 } from '@/components/ui/command'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
+// Hooks
+import { useProjectContext } from '@/hooks/useProjectContext'
+
 // Assets
 import {
   CalendarDaysIcon,
+  Check,
   ChevronDown,
   Hash,
   Inbox,
@@ -42,7 +46,7 @@ import {
 } from 'lucide-react'
 
 // Types
-import type { TaskForm as TaskFromType } from '@/types'
+import type { Project, TaskForm as TaskFromType } from '@/types'
 import type { ClassValue } from 'clsx'
 
 type TaskFormProps = {
@@ -52,8 +56,6 @@ type TaskFormProps = {
   onCancel?: () => void
   onSubmit: (fromData: TaskFromType) => void
 }
-
-const proj: number[] = Array.from(Array(15).keys())
 
 const DEFAULT_FROM_DATA: TaskFromType = {
   content: '',
@@ -68,6 +70,8 @@ export const TaskForm: FC<TaskFormProps> = ({
   onCancel,
   onSubmit,
 }) => {
+  const projects = useProjectContext()
+
   const [taskContent, setTaskContent] = useState<string>(
     defaultFormData.content,
   )
@@ -82,6 +86,17 @@ export const TaskForm: FC<TaskFormProps> = ({
   const [projectOpen, setProjectOpen] = useState<boolean>(false)
 
   const [formData, setFormData] = useState<TaskFromType>(defaultFormData)
+
+  useEffect(() => {
+    if (projectId) {
+      const { name, color_hex } = projects.rows?.find(
+        ({ $id }) => projectId === $id,
+      ) as Project
+
+      setProjectName(name)
+      setProjectColorHex(color_hex)
+    }
+  }, [projects, projectId])
 
   useEffect(() => {
     setFormData((prev: TaskFromType) => ({
@@ -123,7 +138,7 @@ export const TaskForm: FC<TaskFormProps> = ({
           onInput={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
             setTaskContent(e.currentTarget.value)
           }}
-          onKeyDown={(e: React.KeyboardEvent<HTMLElement>)=> {
+          onKeyDown={(e: React.KeyboardEvent<HTMLElement>) => {
             if (e.key === 'Enter') {
               e.preventDefault()
               handleSubmit()
@@ -197,7 +212,10 @@ export const TaskForm: FC<TaskFormProps> = ({
               aria-expanded={projectOpen}
               className='max-w-max'
             >
-              <Inbox /> Inbox <ChevronDown />
+              {projectName ? <Hash color={projectColorHex} /> : <Inbox />}
+
+              <span className='truncate'>{projectName || ' Inbox'}</span>
+              <ChevronDown />
             </Button>
           </PopoverTrigger>
           <PopoverContent
@@ -211,9 +229,26 @@ export const TaskForm: FC<TaskFormProps> = ({
                 <ScrollArea>
                   <CommandEmpty>No projects found</CommandEmpty>
                   <CommandGroup>
-                    {proj.map(i => (
-                      <CommandItem key={i}>
-                        <Hash /> Project {i}
+                    {projects?.rows?.map(({ $id, name, color_hex }) => (
+                      <CommandItem
+                        key={$id}
+                        onSelect={selectedValue => {
+                          setProjectName(
+                            selectedValue === projectName ? '' : name,
+                          )
+                          setProjectId(
+                            selectedValue === projectName ? null : $id,
+                          )
+                          setProjectColorHex(
+                            selectedValue === projectName
+                              ? undefined
+                              : color_hex,
+                          )
+                          setProjectOpen(false)
+                        }}
+                      >
+                        <Hash color={color_hex} /> {name}
+                        {projectName === name && <Check className='ms-auto' />}
                       </CommandItem>
                     ))}
                   </CommandGroup>
