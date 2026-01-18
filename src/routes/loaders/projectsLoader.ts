@@ -6,9 +6,6 @@ import type { LoaderFunction } from 'react-router'
 import { getUserId } from '@/lib/utils'
 import type { Models } from 'appwrite'
 
-export type AppLoaderData = {
-  projects: Models.DocumentList<Models.Document>
-}
 
 const getProjects = async (query: string) => {
   try {

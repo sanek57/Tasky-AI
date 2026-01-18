@@ -9,10 +9,10 @@ import { Toaster } from '@/components/ui/sonner'
 
 // Custom modules
 import { cn } from '@/lib/utils'
-import type { AppLoaderData } from '@/routes/loaders/projectsLoader'
 import {
   ProjectContextProvider,
 } from '@/components/ProjectContextProvider'
+import type { AppLoaderData } from '@/routes/loaders/appLoader'
 
 export const AppLayout = () => {
   const navigation = useNavigation()
