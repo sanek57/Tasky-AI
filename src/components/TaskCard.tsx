@@ -152,7 +152,7 @@ export const TaskCard: FC<TaskCardProps> = ({
                       {task.project?.name || 'Inbox'}
                     </div>
                     {task.project ? (
-                      <Hash size={14} />
+                      <Hash size={14} color={task.project.color_hex}/>
                     ) : (
                       <Inbox
                         size={14}

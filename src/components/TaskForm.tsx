@@ -166,6 +166,7 @@ export const TaskForm: FC<TaskFormProps> = ({
               <Calendar
                 mode='single'
                 disabled={{ before: new Date() }}
+                selected={dueDate ? new Date(dueDate) : undefined}
                 autoFocus
                 onSelect={selected => {
                   setDueDate(selected || null)
