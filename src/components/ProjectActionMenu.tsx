@@ -33,7 +33,7 @@ export const ProjectActionMenu: FC<ProjectActionMenuProps> = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
-      <DropdownMenuContent {...props}>
+      <DropdownMenuContent {...props} className='z-20'>
         <DropdownMenuItem asChild>
           <ProjectFormDialog
             method='PUT'

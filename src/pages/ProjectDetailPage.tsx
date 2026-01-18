@@ -48,7 +48,7 @@ export const ProjectDetailPage = () => {
             <PageTitle> {projectI.name} </PageTitle>
             <ProjectActionMenu
               defaultFormData={{
-                id: projectI.id,
+                id: projectI.$id,
                 name: projectI.name,
                 color_name: projectI.color_name,
                 color_hex: projectI.color_hex,
